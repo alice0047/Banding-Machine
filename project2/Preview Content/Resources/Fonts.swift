@@ -44,6 +44,10 @@ extension Font {
         return .pretend(type: .semibold, size: 20)
     }
     
+    static var pretendardSemiBold18: Font {
+        return .pretend(type: .semibold, size: 18)
+    }
+    
     static var pretendardRegular17: Font {
         return .pretend(type: .regular, size: 17)
     }

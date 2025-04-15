@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct MakeProfileView: View {
     @State var nickname: String = ""
-    
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImage: UIImage? = nil
     @State private var currentPage: Int = 1
     
     var body: some View {
@@ -20,7 +22,7 @@ struct MakeProfileView: View {
             CustomNavigation(action: navigationAction, title: "프로필 생성", showBackBtn: currentPage == 2)
             
             VStack(alignment: .center, content: {
-                Spacer().frame(height: 270)
+                Spacer().frame(height: 250)
                 
                 switch currentPage {
                 case 1:
@@ -98,17 +100,47 @@ struct MakeProfileView: View {
                 .foregroundStyle(.sub)
             
             profileImage
+            
+            Spacer()
+            
+            MainButton(btnText: "완료", width: 368, height: 60, action: {print("메인버튼 눌림")}, color: .sub, textColor: .white)
         })
     }
     
     //MARK: 프로필 사진 선택
     private var profileImage: some View {
-            VStack {
-                Button(action: {
-                    
-                }, label: {
-                    
-                })
+        VStack {
+            PhotosPicker(
+                selection: $selectedItem,
+                matching: .images,
+                photoLibrary: .shared()) {
+                    if let image = selectedImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 200, height: 200)
+                            .clipShape(Circle())
+                    } else {
+                        ZStack {
+                            Circle()
+                                .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                                .foregroundStyle(.sub)
+                                .frame(width: 200, height: 200)
+                                
+                            Image("plusBtn")
+                                .foregroundColor(.black)
+                                .frame(width: 50, height: 50)
+                        }
+                    }
+                }
+                .onChange(of: selectedItem) {
+                    Task {
+                        if let data = try? await selectedItem?.loadTransferable(type: Data.self),
+                           let uiImage = UIImage(data: data) {
+                            selectedImage = uiImage
+                        }
+                    }
+                }
             }
         }
     
