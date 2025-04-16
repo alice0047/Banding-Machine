@@ -19,7 +19,7 @@ struct MakeProfileView: View {
             Color(.main)
                 .ignoresSafeArea()
             
-            CustomNavigation(action: navigationAction, title: "프로필 생성", showBackBtn: currentPage == 2)
+            CustomNavigation(title: "프로필 생성", showBackBtn: currentPage == 2, action: navigationAction)
             
             VStack(alignment: .center, content: {
                 Spacer().frame(height: 250)

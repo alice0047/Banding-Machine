@@ -48,11 +48,27 @@ extension Font {
         return .pretend(type: .semibold, size: 18)
     }
     
+    static var pretendardMedium17: Font {
+        return .pretend(type: .medium, size: 17)
+    }
+    
+    static var pretendardMedium16: Font {
+        return .pretend(type: .medium, size: 16)
+    }
+    
+    static var pretendardMedium14: Font {
+        return .pretend(type: .medium, size: 14)
+    }
+    
     static var pretendardRegular17: Font {
         return .pretend(type: .regular, size: 17)
     }
     
     //MARK: - Stardust
+    static var pixel39: Font {
+        return .pretend(type: .pixel, size: 39)
+    }
+    
     static var pixel25: Font {
         return .pretend(type: .pixel, size: 25)
     }

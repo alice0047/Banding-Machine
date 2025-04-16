@@ -9,22 +9,22 @@ import SwiftUI
 
 struct CustomNavigation: View {
     
-    let action: () -> Void
     let title: String
     let showBackBtn:Bool
+    let action: () -> Void
     
     /// - Parameters
-    ///   - action: 버튼 액션
     ///   - title: 네비게이션 내부 타이틀
     ///   - showBackBtn: 뒤로가기 버튼 여부
+    ///   - action: 버튼 액션
     init(
-        action: @escaping () -> Void,
         title: String,
-        showBackBtn: Bool = true
+        showBackBtn: Bool = true,
+        action: @escaping () -> Void  = {}
     ) {
-        self.action = action
         self.title = title
         self.showBackBtn = showBackBtn
+        self.action = action
     }
     
     var body: some View {
@@ -63,7 +63,7 @@ struct CustomNavigation: View {
 struct CustomNavigation_Preview: PreviewProvider {
     static var previews: some View {
         VStack {
-            CustomNavigation(action: {print("뒤로가기 버튼 눌림")}, title: "프로필 생성", showBackBtn: false)
+            CustomNavigation(title: "프로필 수정", showBackBtn: false)
             
             Spacer()
         }

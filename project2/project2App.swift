@@ -11,7 +11,7 @@ import SwiftUI
 struct project2App: App {
     var body: some Scene {
         WindowGroup {
-            MakeProfileView()
+            EditProfileView()
         }
     }
 }
