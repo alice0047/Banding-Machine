@@ -49,7 +49,7 @@ struct WriteMessageView: View {
                 .foregroundStyle(.mainText)
             
             TopicPicker(
-                options: TopicOptions.all[currentCategory] ?? [],
+                options: currentCategory.dummyTopics,
                 selectedOption: Binding(
                     get: { selectedOption ?? "" },
                     set: { selectedOption = $0 }

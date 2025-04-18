@@ -34,7 +34,7 @@ struct CustomTextEditorStyle: ViewModifier {
                         .stroke(.gray00, lineWidth: 1)
                 )
                 .overlay(alignment: .bottomTrailing) {
-                    Text("\(text.count) / 200")
+                    Text("\(text.count) / 500")
                         .font(.pretendardMedium14)
                         .foregroundColor(.gray01)
                         .padding(.trailing, 10)

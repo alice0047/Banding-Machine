@@ -6,8 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		932209102DB0A5FF0073B7CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9322090F2DB0A5FF0073B7CF /* GoogleService-Info.plist */; };
+		9322091E2DB0ADCC0073B7CF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 9322091D2DB0ADCC0073B7CF /* FirebaseAnalytics */; };
+		932209202DB0ADCC0073B7CF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9322091F2DB0ADCC0073B7CF /* FirebaseAuth */; };
+		932209222DB0ADCC0073B7CF /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 932209212DB0ADCC0073B7CF /* FirebaseDatabase */; };
+		932209242DB0ADCC0073B7CF /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 932209232DB0ADCC0073B7CF /* FirebaseFirestore */; };
+		932209262DB0ADCC0073B7CF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 932209252DB0ADCC0073B7CF /* FirebaseMessaging */; };
+		932209282DB0ADCC0073B7CF /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 932209272DB0ADCC0073B7CF /* FirebaseRemoteConfig */; };
+		9322092A2DB0ADCC0073B7CF /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 932209292DB0ADCC0073B7CF /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		932208412DADE7740073B7CF /* project2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = project2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9322090F2DB0A5FF0073B7CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +48,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932209222DB0ADCC0073B7CF /* FirebaseDatabase in Frameworks */,
+				932209242DB0ADCC0073B7CF /* FirebaseFirestore in Frameworks */,
+				932209262DB0ADCC0073B7CF /* FirebaseMessaging in Frameworks */,
+				932209282DB0ADCC0073B7CF /* FirebaseRemoteConfig in Frameworks */,
+				9322092A2DB0ADCC0073B7CF /* FirebaseStorage in Frameworks */,
+				9322091E2DB0ADCC0073B7CF /* FirebaseAnalytics in Frameworks */,
+				932209202DB0ADCC0073B7CF /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +64,7 @@
 		932208382DADE7740073B7CF = {
 			isa = PBXGroup;
 			children = (
+				9322090F2DB0A5FF0073B7CF /* GoogleService-Info.plist */,
 				932208432DADE7740073B7CF /* project2 */,
 				932208422DADE7740073B7CF /* Products */,
 			);
@@ -78,6 +98,13 @@
 			);
 			name = project2;
 			packageProductDependencies = (
+				9322091D2DB0ADCC0073B7CF /* FirebaseAnalytics */,
+				9322091F2DB0ADCC0073B7CF /* FirebaseAuth */,
+				932209212DB0ADCC0073B7CF /* FirebaseDatabase */,
+				932209232DB0ADCC0073B7CF /* FirebaseFirestore */,
+				932209252DB0ADCC0073B7CF /* FirebaseMessaging */,
+				932209272DB0ADCC0073B7CF /* FirebaseRemoteConfig */,
+				932209292DB0ADCC0073B7CF /* FirebaseStorage */,
 			);
 			productName = project2;
 			productReference = 932208412DADE7740073B7CF /* project2.app */;
@@ -107,6 +134,9 @@
 			);
 			mainGroup = 932208382DADE7740073B7CF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 932208422DADE7740073B7CF /* Products */;
 			projectDirPath = "";
@@ -122,6 +152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932209102DB0A5FF0073B7CF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +370,55 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9322091D2DB0ADCC0073B7CF /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		9322091F2DB0ADCC0073B7CF /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		932209212DB0ADCC0073B7CF /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		932209232DB0ADCC0073B7CF /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		932209252DB0ADCC0073B7CF /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		932209272DB0ADCC0073B7CF /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		932209292DB0ADCC0073B7CF /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9322091C2DB0ADCC0073B7CF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 932208392DADE7740073B7CF /* Project object */;
 }
