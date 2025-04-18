@@ -103,7 +103,7 @@ struct MakeProfileView: View {
             
             Spacer()
             
-            MainButton(btnText: "완료", width: 368, height: 60, action: {print("메인버튼 눌림")}, color: .sub, textColor: .white)
+            MainButton(btnText: "완료", action: {print("메인버튼 눌림")}, color: .sub, textColor: .white)
         })
     }
     

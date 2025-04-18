@@ -22,7 +22,7 @@ struct WriteMessageView: View {
             
             Spacer()
             
-            MainButton(btnText: "등록하기", width: 368, height: 60, action: {print("등록하기 버튼 눌림")}, color: .main, textColor: .white)
+            MainButton(btnText: "등록하기", action: {print("등록하기 버튼 눌림")}, color: .main, textColor: .white)
         })
     }
     

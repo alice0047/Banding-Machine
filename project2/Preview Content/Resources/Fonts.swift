@@ -40,12 +40,24 @@ extension Font {
     }
     
     //MARK: - Pretendard
+    static var pretendardSemiBold24: Font {
+        return .pretend(type: .semibold, size: 24)
+    }
+    
     static var pretendardSemiBold20: Font {
         return .pretend(type: .semibold, size: 20)
     }
     
+    static var pretendardSemiBold12: Font {
+        return .pretend(type: .semibold, size: 12)
+    }
+    
     static var pretendardSemiBold18: Font {
         return .pretend(type: .semibold, size: 18)
+    }
+    
+    static var pretendardMedium21: Font {
+        return .pretend(type: .medium, size: 21)
     }
     
     static var pretendardMedium17: Font {

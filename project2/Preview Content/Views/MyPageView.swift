@@ -30,8 +30,10 @@ struct MyPageView: View {
     private var profileField: some View {
         HStack(alignment: .center, spacing: 17, content: {
             //TODO: - 사진 필요
-            Circle()
+            Image("profileImage")
+                .resizable()
                 .frame(width: 53, height: 53)
+                .clipShape(Circle())
             
             //TODO: - 실제 닉네임 필요
             Text("Bin")
@@ -65,12 +67,19 @@ struct MyPageView: View {
                 .padding(.top, 31)
             
             ScrollView() {
-                MessageCard()
-                
-                MessageCard()
+                VStack(alignment: .center, spacing:13, content: {
+                    
+                    MessageCard()
+                    
+                    MessageCard()
+                    
+                    
+                })
+                .padding(.horizontal, 2)
+                .padding(.vertical, 3)
             }
         })
-        .frame(minWidth: 402, maxHeight: .infinity)
+        .frame(minWidth: 405, maxHeight: .infinity)
         .background(.white)
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 25, topTrailingRadius: 25))
         .ignoresSafeArea(.all)
