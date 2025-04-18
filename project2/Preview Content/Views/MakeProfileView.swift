@@ -9,10 +9,12 @@ import SwiftUI
 import PhotosUI
 
 struct MakeProfileView: View {
-    @State var nickname: String = ""
+    @StateObject private var viewModel = ProfileViewModel()
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImage: UIImage? = nil
     @State private var currentPage: Int = 1
+    
+    //userDefault에 저장
+    @AppStorage("nickname") var savedNickname: String = ""
     
     var body: some View {
         ZStack(alignment: .top, content: {
@@ -55,7 +57,7 @@ struct MakeProfileView: View {
                 .font(.pixel25)
                 .foregroundStyle(.sub)
             
-            TextField(text: $nickname) {
+            TextField(text: $viewModel.nickname) {
                 Text("닉네임을 입력해주세요")
                     .foregroundStyle(Color.white)
                     .font(.pixel19)
@@ -103,46 +105,60 @@ struct MakeProfileView: View {
             
             Spacer()
             
-            MainButton(btnText: "완료", action: {print("메인버튼 눌림")}, color: .sub, textColor: .white)
+            MainButton(
+                btnText: "완료",
+                action: {
+                    Task {
+                        await viewModel.saveProfile()
+                        savedNickname = viewModel.nickname
+                    }
+                },
+                color: viewModel.selectedImage == nil ? .gray00 : .sub,
+                textColor: .white
+            )
+            .disabled(viewModel.selectedImage == nil)
         })
     }
     
     //MARK: 프로필 사진 선택
     private var profileImage: some View {
         VStack {
-            PhotosPicker(
-                selection: $selectedItem,
-                matching: .images,
-                photoLibrary: .shared()) {
-                    if let image = selectedImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
+            let image = viewModel.selectedImage // ✅ 여기서 미리 복사
+
+            PhotosPicker(selection: $selectedItem, matching: .images) {
+                if let image = image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200)
+                        .clipShape(Circle())
+                } else {
+                    ZStack {
+                        Circle()
+                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                            .foregroundStyle(.sub)
                             .frame(width: 200, height: 200)
-                            .clipShape(Circle())
-                    } else {
-                        ZStack {
-                            Circle()
-                                .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                                .foregroundStyle(.sub)
-                                .frame(width: 200, height: 200)
-                                
-                            Image("plusBtn")
-                                .foregroundColor(.black)
-                                .frame(width: 50, height: 50)
-                        }
+
+                        Image("plusBtn")
+                            .resizable()
+                            .frame(width: 50, height: 50)
                     }
                 }
-                .onChange(of: selectedItem) {
-                    Task {
-                        if let data = try? await selectedItem?.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: data) {
-                            selectedImage = uiImage
+            }
+            .onChange(of: selectedItem) {
+                Task {
+                    if let data = try? await selectedItem?.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        await MainActor.run {
+                            viewModel.selectedImage = uiImage
                         }
                     }
                 }
             }
+
         }
+    }
+
     
     //MARK: - Functions
     private var navigationAction: () -> Void {

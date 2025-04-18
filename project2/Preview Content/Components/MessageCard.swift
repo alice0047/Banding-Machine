@@ -36,7 +36,7 @@ struct MessageCard: View {
             })
             .padding(.vertical, 17)
             .padding(.horizontal, 20)
-            .frame(width: 368, height: .infinity)
+            .frame(maxWidth: 368, maxHeight: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color.white)

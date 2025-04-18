@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @StateObject private var profileVM = ProfileViewModel()
+    @AppStorage("nickname") private var nickname: String = ""
+    
     var body: some View {
         ZStack(alignment: .top, content: {
             
@@ -22,23 +25,31 @@ struct MyPageView: View {
                 myMessageField
                 
             })
-            
         })
+        .task {
+            await profileVM.fetchUserInfo(nickname: nickname)
+        }
     }
     
     //MARK: - 프로필 필드
     private var profileField: some View {
         HStack(alignment: .center, spacing: 17, content: {
-            //TODO: - 사진 필요
-            Image("profileImage")
-                .resizable()
+
+            if let user = profileVM.userInfo {
+                AsyncImage(url: URL(string: user.image)) { image in
+                    image.resizable()
+                } placeholder: {
+                    ProgressView()
+                }
                 .frame(width: 53, height: 53)
                 .clipShape(Circle())
-            
-            //TODO: - 실제 닉네임 필요
-            Text("Bin")
-                .foregroundStyle(.mainText)
-                .font(.pixel39)
+
+                Text(user.name)
+                    .foregroundStyle(.mainText)
+                    .font(.pixel39)
+            } else {
+                ProgressView()
+            }
             
             Spacer()
             
