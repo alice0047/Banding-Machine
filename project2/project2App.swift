@@ -20,10 +20,11 @@ struct project2App: App {
     
     var body: some Scene {
         WindowGroup {
-            MyPageView()
-                .onAppear {
-                    nickname = "Bin" // ✅ 테스트용 닉네임 설정
-                }
+            WriteMessageView()
+//            MyPageView()
+//                .onAppear {
+//                    nickname = "Bin" // ✅ 테스트용 닉네임 설정
+//                }
         }
     }
 }

@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct WriteMessageView: View {
+    @StateObject private var viewModel = MessageWriteViewModel()
+    @AppStorage("nickname") private var nickname: String = ""
+    
     @State private var detailMessage: String = ""
+    
     //TODO: 홈에서 선택한 옵션 받아서 더미 넣어둠
-    @State private var selectedOption: String? = "어떤 직무가 저한테 맞을까요?"
+    @State private var selectedTopic: String = "어떤 직무가 저한테 맞을까요?"
     let currentCategory: TopicCategory = .career // 홈에서 받아온 값
 
     
@@ -22,7 +26,20 @@ struct WriteMessageView: View {
             
             Spacer()
             
-            MainButton(btnText: "등록하기", action: {print("등록하기 버튼 눌림")}, color: .main, textColor: .white)
+            MainButton(
+                btnText: "등록하기",
+                action: {
+                    Task {
+                        await viewModel.saveMessage(
+                            nickname: nickname,
+                            category: currentCategory,
+                            topic: selectedTopic,
+                            content: detailMessage
+                        )
+                    }
+                },
+                color: .main,
+                textColor: .white)
         })
     }
     
@@ -50,10 +67,7 @@ struct WriteMessageView: View {
             
             TopicPicker(
                 options: currentCategory.dummyTopics,
-                selectedOption: Binding(
-                    get: { selectedOption ?? "" },
-                    set: { selectedOption = $0 }
-                )
+                selectedOption: $selectedTopic
             )
         })
         .frame(width: 360, height: 85)

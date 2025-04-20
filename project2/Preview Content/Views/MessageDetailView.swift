@@ -20,7 +20,8 @@ struct MessageDetailView: View {
     
     private var messageField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            
+
+
         })
     }
     
@@ -29,7 +30,56 @@ struct MessageDetailView: View {
             
         })
     }
+    
+    //MARK: 프로필 필드
+    private var profile: some View {
+        HStack(alignment: .center, content: {
+            //TODO: 프로필 사진, 닉네임, 날짜 실제 받아와야 함
+            Image("profileImage")
+                .resizable()
+                .frame(width: 42, height: 42)
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading, content: {
+                Text("Bin")
+                    .font(.pretendardSemiBold18)
+                    .foregroundStyle(.mainText)
+                
+                Text("2025.04.24")
+                    .font(.pretendardMedium14)
+                    .foregroundStyle(.gray01)
+            })
+            
+            Spacer()
+        })
+    }
 }
+
+private func profile(user: UserInfo, dateText: String) -> some View {
+    HStack(alignment: .center) {
+        AsyncImage(url: URL(string: user.image)) { image in
+            image.resizable()
+        } placeholder: {
+            Circle()
+                .fill(Color.gray.opacity(0.3))
+        }
+        .frame(width: 42, height: 42)
+        .clipShape(Circle())
+
+        VStack(alignment: .leading, spacing: 2) {
+            Text(user.name)
+                .font(.pretendardSemiBold18)
+                .foregroundStyle(.mainText)
+
+            Text(dateText)
+                .font(.pretendardMedium14)
+                .foregroundStyle(.gray01)
+        }
+
+        Spacer()
+    }
+}
+
 
 #Preview {
     MessageDetailView()
