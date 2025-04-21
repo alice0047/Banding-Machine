@@ -9,38 +9,29 @@ import SwiftUI
 
 struct MessageCard: View {
     let info: MessageInfo
-    let action: () -> Void
     
     /// - Parameters
     ///   - messageInfo: 메시지 카드 정보 - 작성자, 내용, 댓글 개수, 카테고리, 날짜
-    ///   - action: 버튼 액션 - 해당 메시지 디테일뷰로 가야함
     init(
-        info: MessageInfo,
-        action: @escaping () -> Void = {}
+        info: MessageInfo
     ) {
         self.info = info
-        self.action = action
     }
     
     var body: some View {
-        
-        Button(action: {
-            action()
-        }, label: {
-            VStack(alignment: .center, spacing: 10, content: {
-                categoryAndBtn
+        VStack(alignment: .center, spacing: 10, content: {
+            categoryAndBtn
 
-                contentField
-            })
-            .padding(.vertical, 17)
-            .padding(.horizontal, 20)
-            .frame(maxWidth: 368, maxHeight: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.white)
-                    .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
-            )
+            contentField
         })
+        .padding(.vertical, 17)
+        .padding(.horizontal, 20)
+        .frame(maxWidth: 368, maxHeight: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
+        )
     }
     
     //MARK: - 카테고리와 ...버튼
@@ -78,6 +69,10 @@ struct MessageCard: View {
             Text("\(info.mentorID), \(info.topic)")
                 .font(.pretendardRegular17)
                 .foregroundStyle(.mainText)
+                .multilineTextAlignment(.leading)
+                .lineSpacing(1.5)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
             
             HStack(alignment: . center, spacing: 5, content: {
                 Image("comment")
@@ -90,6 +85,7 @@ struct MessageCard: View {
                     .foregroundColor(.gray02)
             })
         })
+        .frame(maxWidth: .infinity)
     }
     
     

@@ -13,22 +13,25 @@ struct MyPageView: View {
     @AppStorage("profileImageURL") private var profileImage: String = ""
     
     var body: some View {
-        ZStack(alignment: .top, content: {
+        NavigationStack {
             
-            Color(.main)
-                .ignoresSafeArea()
-            
-            VStack(alignment: .center, spacing: 25, content: {
-                CustomNavigation(title: "마이페이지", showBackBtn: true, action: {print("뒤로가기 버튼 눌림")})
+            ZStack(alignment: .top, content: {
                 
-                profileField
+                Color(.main)
+                    .ignoresSafeArea()
                 
-                myMessageField
-                
+                VStack(alignment: .center, spacing: 25) {
+                    CustomNavigation(title: "마이페이지", showBackBtn: true, action: {
+                        print("뒤로가기 버튼 눌림")
+                    })
+                    
+                    profileField
+                    myMessageField
+                }
             })
-        })
-        .task {
-            await messageVM.fetchMessages(for: nickname)
+            .task {
+                await messageVM.fetchMessages(for: nickname)
+            }
         }
     }
     
@@ -83,21 +86,24 @@ struct MyPageView: View {
                             .foregroundStyle(.mainText)
                         
                         Text("자판기에서 TOPIC을 뽑아,\n멘토에게 메시지를 작성해보세요")
-                            .font(.pretendardMedium16)
-                            .foregroundStyle(.mainText)
+                            .font(.pretendardRegular16)
+                            .foregroundStyle(.gray02)
                             .multilineTextAlignment(.center)
                     })
-                    .frame(width: 368, height: 400)
+                    .frame(width: 372, height: 400)
                 } else {
                     VStack(alignment: .center, spacing:13, content: {
                         ForEach(messageVM.messages) { message in
-                            MessageCard(info: message) {
-                                print("메시지 클릭됨: \(message.id)")
+                            NavigationLink {
+                                MessageDetailView(message: message)
+                            } label: {
+                                MessageCard(info: message)
                             }
                         }
                     })
                     .padding(.horizontal, 2)
-                    .padding(.vertical, 3)
+                    .padding(.top, 3)
+                    .padding(.bottom, 20)
                 }
             }
         })

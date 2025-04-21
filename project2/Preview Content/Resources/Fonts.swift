@@ -76,6 +76,10 @@ extension Font {
         return .pretend(type: .regular, size: 17)
     }
     
+    static var pretendardRegular16: Font {
+        return .pretend(type: .regular, size: 16)
+    }
+    
     //MARK: - Stardust
     static var pixel39: Font {
         return .pretend(type: .pixel, size: 39)
