@@ -39,6 +39,7 @@ struct EditProfileView: View {
                 Spacer()
                 
                 Button(action: {
+                    //TODO: 서버에 변경 및 유저디폴트 갱신
                     print("완료 버튼 눌림")
                 }, label: {
                     Text("완료")

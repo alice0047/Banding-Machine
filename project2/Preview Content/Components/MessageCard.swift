@@ -8,26 +8,24 @@
 import SwiftUI
 
 struct MessageCard: View {
-//TODO: 주석 처리하기
-//    let info: MessageInfo
-//    let action: () -> Void
-//    
-//    /// - Parameters
-//    ///   - messageInfo: 메시지 카드 정보 - 작성자, 내용, 댓글 개수, 카테고리, 날짜
-//    ///   - action: 버튼 액션 - 해당 메시지 디테일뷰로 가야함
-//    init(
-//        info: MessageInfo,
-//        action: @escaping () -> Void = {}
-//    ) {
-//        self.info = info
-//        self.action = action
-//    }
+    let info: MessageInfo
+    let action: () -> Void
+    
+    /// - Parameters
+    ///   - messageInfo: 메시지 카드 정보 - 작성자, 내용, 댓글 개수, 카테고리, 날짜
+    ///   - action: 버튼 액션 - 해당 메시지 디테일뷰로 가야함
+    init(
+        info: MessageInfo,
+        action: @escaping () -> Void = {}
+    ) {
+        self.info = info
+        self.action = action
+    }
     
     var body: some View {
         
         Button(action: {
-//           action
-            print("메시지카드 클릭됨")
+            action()
         }, label: {
             VStack(alignment: .center, spacing: 10, content: {
                 categoryAndBtn
@@ -48,8 +46,7 @@ struct MessageCard: View {
     //MARK: - 카테고리와 ...버튼
     private var categoryAndBtn: some View {
         HStack(alignment: .center, content: {
-            //TODO: 실제 카테고리 정보 넣어야 함
-            Text("진로/커리어")
+            Text(info.category.rawValue)
                 .font(.pretendardSemiBold12)
                 .foregroundStyle(.gray02)
                 .padding(.vertical, 4)
@@ -78,8 +75,7 @@ struct MessageCard: View {
         VStack(alignment: .leading, spacing: 17, content: {
             profile
             
-            //TODO: 내용 서버에서 가져와 넣어야함
-            Text("ISAAC, 첫 회사는 어떻게 선택하셨어요?")
+            Text("\(info.mentorID), \(info.topic)")
                 .font(.pretendardRegular17)
                 .foregroundStyle(.mainText)
             
@@ -89,7 +85,7 @@ struct MessageCard: View {
                     .frame(width: 21, height: 20)
                     .foregroundStyle(.gray02)
                 
-                Text("1")
+                Text("\(info.replyCount)")
                     .font(.pretendardMedium14)
                     .foregroundColor(.gray02)
             })
@@ -108,11 +104,11 @@ struct MessageCard: View {
                 .clipShape(Circle())
             
             VStack(alignment: .leading, content: {
-                Text("Bin")
+                Text(info.runnerID)
                     .font(.pretendardSemiBold18)
                     .foregroundStyle(.mainText)
                 
-                Text("2025.04.24")
+                Text(DateUtils.formatDate(info.createdAt))
                     .font(.pretendardMedium14)
                     .foregroundStyle(.gray01)
             })
@@ -121,8 +117,4 @@ struct MessageCard: View {
         })
     }
     
-}
-
-#Preview {
-    MessageCard()
 }

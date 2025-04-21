@@ -11,11 +11,12 @@ import FirebaseStorage
 import FirebaseAuth
 
 @MainActor
-class MessageWriteViewModel: ObservableObject {
+class WriteMessageViewModel: ObservableObject {
     @Published var isMessageSaved: Bool = false
 
     func saveMessage(
             nickname: String,
+            imageURL: String,
             category: TopicCategory,
             topic: String,
             content: String
@@ -27,7 +28,8 @@ class MessageWriteViewModel: ObservableObject {
             let message = MessageInfo(
                 id: messageID,
                 runnerID: nickname,
-                mentorID: "mentor123", // 추후 선택 연결
+                runnerImageURL: imageURL,
+                mentorID: "Isaac", //TODO: 추후 연결
                 topic: topic,
                 content: content,
                 category: category,
@@ -36,20 +38,9 @@ class MessageWriteViewModel: ObservableObject {
             )
 
             do {
-                let messageData: [String: Any] = [
-                    "id": message.id,
-                    "runnerID": message.runnerID,
-                    "mentorID": message.mentorID,
-                    "topic": message.topic,
-                    "content": message.content,
-                    "category": message.category.rawValue,
-                    "createdAt": Timestamp(date: message.createdAt),
-                    "replyCount": message.replyCount
-                ]
-                
-                try await db.collection("messages").document(message.id).setData(messageData)
-                    isMessageSaved = true
-                    print("✅ 메시지 저장 성공")
+                try db.collection("messages").document(messageID).setData(from: message)
+                isMessageSaved = true
+                print("✅ 메시지 저장 성공")
             } catch {
                 print("❌ 메시지 저장 실패: \(error.localizedDescription)")
             }

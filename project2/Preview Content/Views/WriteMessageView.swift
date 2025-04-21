@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct WriteMessageView: View {
-    @StateObject private var viewModel = MessageWriteViewModel()
+    @StateObject private var messageVM = WriteMessageViewModel()
+    
     @AppStorage("nickname") private var nickname: String = ""
+    @AppStorage("profileImageURL") private var profileImageURL: String = ""
     
     @State private var detailMessage: String = ""
-    
     //TODO: 홈에서 선택한 옵션 받아서 더미 넣어둠
     @State private var selectedTopic: String = "어떤 직무가 저한테 맞을까요?"
     let currentCategory: TopicCategory = .career // 홈에서 받아온 값
@@ -30,8 +31,9 @@ struct WriteMessageView: View {
                 btnText: "등록하기",
                 action: {
                     Task {
-                        await viewModel.saveMessage(
+                        await messageVM.saveMessage(
                             nickname: nickname,
+                            imageURL: profileImageURL,
                             category: currentCategory,
                             topic: selectedTopic,
                             content: detailMessage

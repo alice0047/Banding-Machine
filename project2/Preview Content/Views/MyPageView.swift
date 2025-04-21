@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @StateObject private var profileVM = ProfileViewModel()
+    @StateObject private var messageVM = ReadMessageViewModel()
     @AppStorage("nickname") private var nickname: String = ""
+    @AppStorage("profileImageURL") private var profileImage: String = ""
     
     var body: some View {
         ZStack(alignment: .top, content: {
@@ -27,7 +28,7 @@ struct MyPageView: View {
             })
         })
         .task {
-            await profileVM.fetchUserInfo(nickname: nickname)
+            await messageVM.fetchMessages(for: nickname)
         }
     }
     
@@ -35,21 +36,17 @@ struct MyPageView: View {
     private var profileField: some View {
         HStack(alignment: .center, spacing: 17, content: {
 
-            if let user = profileVM.userInfo {
-                AsyncImage(url: URL(string: user.image)) { image in
-                    image.resizable()
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 53, height: 53)
-                .clipShape(Circle())
-
-                Text(user.name)
-                    .foregroundStyle(.mainText)
-                    .font(.pixel39)
-            } else {
+            AsyncImage(url: URL(string: profileImage)) { image in
+                image.resizable()
+            } placeholder: {
                 ProgressView()
             }
+            .frame(width: 53, height: 53)
+            .clipShape(Circle())
+
+            Text(nickname)
+                .foregroundStyle(.mainText)
+                .font(.pixel39)
             
             Spacer()
             
@@ -78,16 +75,30 @@ struct MyPageView: View {
                 .padding(.top, 31)
             
             ScrollView() {
-                VStack(alignment: .center, spacing:13, content: {
-                    
-                    MessageCard()
-                    
-                    MessageCard()
-                    
-                    
-                })
-                .padding(.horizontal, 2)
-                .padding(.vertical, 3)
+                if messageVM.messages.isEmpty {
+                    VStack(alignment: .center, spacing: 25, content: {
+                        
+                        Text("작성한 메시지가 없습니다")
+                            .font(.pretendardSemiBold18)
+                            .foregroundStyle(.mainText)
+                        
+                        Text("자판기에서 TOPIC을 뽑아,\n멘토에게 메시지를 작성해보세요")
+                            .font(.pretendardMedium16)
+                            .foregroundStyle(.mainText)
+                            .multilineTextAlignment(.center)
+                    })
+                    .frame(width: 368, height: 400)
+                } else {
+                    VStack(alignment: .center, spacing:13, content: {
+                        ForEach(messageVM.messages) { message in
+                            MessageCard(info: message) {
+                                print("메시지 클릭됨: \(message.id)")
+                            }
+                        }
+                    })
+                    .padding(.horizontal, 2)
+                    .padding(.vertical, 3)
+                }
             }
         })
         .frame(minWidth: 405, maxHeight: .infinity)

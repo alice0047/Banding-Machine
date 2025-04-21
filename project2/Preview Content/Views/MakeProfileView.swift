@@ -15,6 +15,7 @@ struct MakeProfileView: View {
     
     //userDefault에 저장
     @AppStorage("nickname") var savedNickname: String = ""
+    @AppStorage("profileImageURL") var savedProfileImage: String = ""
     
     var body: some View {
         ZStack(alignment: .top, content: {
@@ -110,7 +111,11 @@ struct MakeProfileView: View {
                 action: {
                     Task {
                         await viewModel.saveProfile()
-                        savedNickname = viewModel.nickname
+                        savedNickname = viewModel.nickname /// 닉네임 유저디폴트로 저장
+                        if let url = viewModel.userInfo?.image {
+                            savedProfileImage = url /// 이미지 유저디폴트로 저장
+                        }
+                        
                     }
                 },
                 color: viewModel.selectedImage == nil ? .gray00 : .sub,

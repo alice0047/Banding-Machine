@@ -10,6 +10,7 @@ import Foundation
 struct MessageInfo: Identifiable, Codable {
     var id: String
     var runnerID: String       // 작성자 (러너)
+    var runnerImageURL: String       // 작성자 프로필 이미지 URL
     var mentorID: String       // 대상 멘토
     var topic: String     // 선택한 토픽 제목
     var content: String

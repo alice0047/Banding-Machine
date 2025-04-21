@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MessageDetailView: View {
+    @StateObject private var viewModel = ReadMessageViewModel()
+    @AppStorage("nickname") private var nickname: String = ""
+
     var body: some View {
         VStack(alignment: .center, spacing: 15, content: {
             CustomNavigation(title: "메시지 보기", showBackBtn: true, action: {print("뒤로가기 버튼 눌림")})
