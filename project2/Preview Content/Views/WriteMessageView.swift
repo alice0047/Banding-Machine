@@ -8,41 +8,55 @@
 import SwiftUI
 
 struct WriteMessageView: View {
-    @StateObject private var messageVM = WriteMessageViewModel()
-    
+    @StateObject private var viewModel = MessageViewModel()
+    @Environment(\.dismiss) private var dismiss
     @AppStorage("nickname") private var nickname: String = ""
     @AppStorage("profileImageURL") private var profileImageURL: String = ""
-    
     @State private var detailMessage: String = ""
-    //TODO: 홈에서 선택한 옵션 받아서 더미 넣어둠
-    @State private var selectedTopic: String = "어떤 직무가 저한테 맞을까요?"
-    let currentCategory: TopicCategory = .career // 홈에서 받아온 값
-
+    @State private var selectedTopic: String = "어떤 직무가 저한테 맞을까요?" // 홈에서 받아온 값
+    
+    let mode: WriteMode
+    var currentCategory: TopicCategory = .career // 홈에서 받아온 값
     
     var body: some View {
         VStack(alignment : .center, spacing: 18,content: {
-            CustomNavigation(title: "메시지 작성", showBackBtn: true, action: {print("뒤로가기 버튼 눌림")})
+            CustomNavigation(title: mode.navigationTitle, showBackBtn: true, action: {dismiss()})
             
             contentField
             
             Spacer()
             
             MainButton(
-                btnText: "등록하기",
+                btnText: mode.buttonText,
                 action: {
                     Task {
-                        await messageVM.saveMessage(
-                            nickname: nickname,
-                            imageURL: profileImageURL,
-                            category: currentCategory,
-                            topic: selectedTopic,
-                            content: detailMessage
-                        )
+                        switch mode {
+                        case .create:
+                            await viewModel.saveMessage(
+                                nickname: nickname,
+                                imageURL: profileImageURL,
+                                category: currentCategory,
+                                topic: selectedTopic,
+                                content: detailMessage
+                            )
+                        case .edit(let message):
+                                viewModel.updateMessage(id: message.id, newTopic: selectedTopic, newContent: detailMessage
+                            )
+                        }
                     }
                 },
                 color: .main,
                 textColor: .white)
         })
+        .onAppear {
+            if case .edit(let message) = mode {
+                detailMessage = message.content
+                selectedTopic = message.topic
+            } else {
+                selectedTopic = selectedTopic
+            }
+        }
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - 대화 주제, 내용
@@ -96,5 +110,5 @@ struct WriteMessageView: View {
 }
 
 #Preview {
-    WriteMessageView()
+    WriteMessageView(mode: .create)
 }

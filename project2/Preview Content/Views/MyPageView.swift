@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @StateObject private var messageVM = ReadMessageViewModel()
+    @StateObject private var viewModel = MessageViewModel()
     @AppStorage("nickname") private var nickname: String = ""
     @AppStorage("profileImageURL") private var profileImage: String = ""
+    
+    @State private var selectedMessage: MessageInfo?
+    @State private var showEditView: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -30,7 +33,12 @@ struct MyPageView: View {
                 }
             })
             .task {
-                await messageVM.fetchMessages(for: nickname)
+                await viewModel.fetchMessages(for: nickname)
+            }
+            .navigationDestination(isPresented: $showEditView) {
+                if let selected = selectedMessage {
+                    WriteMessageView(mode: .edit(existingMessage: selected))
+                }
             }
         }
     }
@@ -73,12 +81,18 @@ struct MyPageView: View {
     private var myMessageField: some View {
         VStack(alignment: .leading, spacing: 13, content: {
             
-            Text("내가 작성한 메시지")
-                .font(.pretendardSemiBold20)
-                .padding(.top, 31)
+            HStack(content: {
+                Text("내가 작성한 메시지")
+                    .font(.pretendardSemiBold20)
+                    .padding(.top, 31)
+                    .padding(.leading, 4)
+                
+                Spacer()
+            })
+            .padding(.leading, 20)
             
             ScrollView() {
-                if messageVM.messages.isEmpty {
+                if viewModel.messages.isEmpty {
                     VStack(alignment: .center, spacing: 25, content: {
                         
                         Text("작성한 메시지가 없습니다")
@@ -90,15 +104,22 @@ struct MyPageView: View {
                             .foregroundStyle(.gray02)
                             .multilineTextAlignment(.center)
                     })
-                    .frame(width: 372, height: 400)
+                    .frame(maxWidth: 358, minHeight: 400)
                 } else {
                     VStack(alignment: .center, spacing:13, content: {
-                        ForEach(messageVM.messages) { message in
-                            NavigationLink {
-                                MessageDetailView(message: message)
-                            } label: {
-                                MessageCard(info: message)
-                            }
+                        ForEach(viewModel.messages) { message in
+                            MessageCard(
+                                info: message,
+                                onDelete: { id in
+                                    Task {
+                                        await viewModel.deleteMessage(id: id)
+                                    }
+                                },
+                                onEdit: {_ in 
+                                    selectedMessage = message
+                                    showEditView = true
+                                }
+                            )
                         }
                     })
                     .padding(.horizontal, 2)
@@ -106,9 +127,10 @@ struct MyPageView: View {
                     .padding(.bottom, 20)
                 }
             }
+            .padding(.horizontal, 16)
         })
-        .frame(minWidth: 405, maxHeight: .infinity)
         .background(.white)
+        .frame(maxWidth: 402, maxHeight: .infinity)
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 25, topTrailingRadius: 25))
         .ignoresSafeArea(.all)
     }

@@ -9,29 +9,42 @@ import SwiftUI
 
 struct MessageCard: View {
     let info: MessageInfo
-    
-    /// - Parameters
-    ///   - messageInfo: 메시지 카드 정보 - 작성자, 내용, 댓글 개수, 카테고리, 날짜
-    init(
-        info: MessageInfo
-    ) {
-        self.info = info
-    }
+    @State private var showSheet = false
+    let onDelete: (String) -> Void
+    let onEdit: (MessageInfo) -> Void
     
     var body: some View {
-        VStack(alignment: .center, spacing: 10, content: {
-            categoryAndBtn
+        ZStack {
+            NavigationLink(destination: MessageDetailView(message: info), label: {
+                //MARK: - 카드 전체 UI
+                VStack(alignment: .center, spacing: 10, content: {
+                    categoryAndBtn
 
-            contentField
-        })
-        .padding(.vertical, 17)
-        .padding(.horizontal, 20)
-        .frame(maxWidth: 368, maxHeight: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
-        )
+                    contentField
+                })
+                .padding(.vertical, 17)
+                .padding(.horizontal, 20)
+                .frame(maxWidth: 368, maxHeight: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white)
+                        .shadow(color: Color.black.opacity(0.25), radius: 2, x: 0, y: 0)
+                )
+            })
+        }
+        .sheet(isPresented: $showSheet) {
+            MessageActionSheet(
+                message: info,
+                onEdit: {
+                    showSheet = false
+                    onEdit(info)
+                },
+                onDelete: {
+                    showSheet = false
+                    onDelete(info.id)
+                }
+            )
+        }
     }
     
     //MARK: - 카테고리와 ...버튼
@@ -50,14 +63,14 @@ struct MessageCard: View {
             Spacer()
             
             Button(action: {
-                //TODO: 수정 삭제 만들어야 함
-            }, label: {
-                Image(systemName: "ellipsis")
+                showSheet = true
+            }) {
+                Image("ellipsis")
                     .resizable()
-                    .frame(width: 20, height: 4)
+                    .frame(width: 30, height: 33)
                     .foregroundStyle(.gray02)
-            })
-                
+            }
+            .buttonStyle(BorderlessButtonStyle())
         })
     }
     
@@ -112,5 +125,8 @@ struct MessageCard: View {
             Spacer()
         })
     }
-    
+}
+
+#Preview {
+    MyPageView()
 }
