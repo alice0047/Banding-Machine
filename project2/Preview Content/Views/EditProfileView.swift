@@ -9,10 +9,14 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
-    @State var nickname: String = ""
+    @StateObject private var viewModel = ProfileViewModel()
+
+    //User Default
+    @AppStorage("nickname") private var nickname: String = ""
+    @AppStorage("profileImageURL") private var profileImageURL: String = ""
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
-    @State private var currentPage: Int = 1
     
     var body: some View {
         ZStack(alignment: .top, content: {
@@ -39,8 +43,18 @@ struct EditProfileView: View {
                 Spacer()
                 
                 Button(action: {
-                    //TODO: 서버에 변경 및 유저디폴트 갱신
-                    print("완료 버튼 눌림")
+                    Task {
+                        viewModel.nickname = nickname
+                        viewModel.selectedImage = selectedImage
+                        await viewModel.updateProfile()
+
+                        if viewModel.isProfileSaved {
+                            nickname = viewModel.nickname
+                            if let url = viewModel.updatedImageURL {
+                                profileImageURL = url
+                            }
+                        }
+                    }
                 }, label: {
                     Text("완료")
                         .font(.pretendardRegular17)
@@ -52,12 +66,14 @@ struct EditProfileView: View {
                             })
                 })
                 .padding(.trailing, 16)
-                
-                
             })
         })
+        .onAppear {
+            Task {
+                selectedImage = try? await viewModel.downloadImage(from: profileImageURL)
+            }
+        }
         .onAppear (perform : UIApplication.shared.hideKeyboard)
-
     }
     
     //MARK: 프로필 사진 선택

@@ -111,11 +111,10 @@ struct MakeProfileView: View {
                 action: {
                     Task {
                         await viewModel.saveProfile()
-                        savedNickname = viewModel.nickname /// 닉네임 유저디폴트로 저장
-                        if let url = viewModel.userInfo?.image {
-                            savedProfileImage = url /// 이미지 유저디폴트로 저장
+                        savedNickname = viewModel.nickname
+                        if let url = viewModel.updatedImageURL {
+                            savedProfileImage = url
                         }
-                        
                     }
                 },
                 color: viewModel.selectedImage == nil ? .gray00 : .sub,
@@ -128,7 +127,7 @@ struct MakeProfileView: View {
     //MARK: 프로필 사진 선택
     private var profileImage: some View {
         VStack {
-            let image = viewModel.selectedImage // ✅ 여기서 미리 복사
+            let image = viewModel.selectedImage
 
             PhotosPicker(selection: $selectedItem, matching: .images) {
                 if let image = image {
@@ -178,8 +177,6 @@ struct MakeProfileView: View {
             return {}
         }
     }
-    
-
 }
 
 
