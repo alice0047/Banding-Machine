@@ -33,7 +33,7 @@ struct project2App: App {
     
     var body: some Scene {
         WindowGroup {
-            EditProfileView()
+            MyPageView()
         }
     }
 }

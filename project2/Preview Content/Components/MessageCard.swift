@@ -79,7 +79,7 @@ struct MessageCard: View {
         VStack(alignment: .leading, spacing: 17, content: {
             profile
             
-            Text("\(info.mentorID), \(info.topic)")
+            Text("\(info.mentor), \(info.topic)")
                 .font(.pretendardRegular17)
                 .foregroundStyle(.mainText)
                 .multilineTextAlignment(.leading)
@@ -113,7 +113,7 @@ struct MessageCard: View {
                 .clipShape(Circle())
             
             VStack(alignment: .leading, content: {
-                Text(info.runnerID)
+                Text(info.runner)
                     .font(.pretendardSemiBold18)
                     .foregroundStyle(.mainText)
                 

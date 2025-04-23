@@ -81,12 +81,24 @@ extension Font {
     }
     
     //MARK: - Stardust
+    static var pixel50: Font {
+        return .pretend(type: .pixel, size: 50)
+    }
+    
     static var pixel39: Font {
         return .pretend(type: .pixel, size: 39)
     }
     
+    static var pixel34: Font {
+        return .pretend(type: .pixel, size: 34)
+    }
+    
     static var pixel25: Font {
         return .pretend(type: .pixel, size: 25)
+    }
+    
+    static var pixel22: Font {
+        return .pretend(type: .pixel, size: 22)
     }
     
     static var pixel19: Font {

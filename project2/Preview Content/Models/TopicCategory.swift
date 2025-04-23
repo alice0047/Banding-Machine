@@ -21,6 +21,11 @@ struct Topic: Identifiable, Codable {
 }
 
 extension TopicCategory {
+    //카테고리 출력
+    static var displayNames: [String] {
+        TopicCategory.allCases.map { $0.rawValue }
+    }
+    
     var dummyTopics: [String] {
         switch self {
         case .career:

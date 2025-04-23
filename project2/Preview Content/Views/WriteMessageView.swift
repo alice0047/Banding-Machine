@@ -13,10 +13,12 @@ struct WriteMessageView: View {
     @AppStorage("nickname") private var nickname: String = ""
     @AppStorage("profileImageURL") private var profileImageURL: String = ""
     @State private var detailMessage: String = ""
-    @State private var selectedTopic: String = "어떤 직무가 저한테 맞을까요?" // 홈에서 받아온 값
+    @State private var selectedTopic: String = ""
     
     let mode: WriteMode
-    var currentCategory: TopicCategory = .career // 홈에서 받아온 값
+    let mentorName: String
+    let category: TopicCategory
+    let initialTopic: String
     
     var body: some View {
         VStack(alignment : .center, spacing: 18,content: {
@@ -35,9 +37,10 @@ struct WriteMessageView: View {
                             await viewModel.saveMessage(
                                 nickname: nickname,
                                 imageURL: profileImageURL,
-                                category: currentCategory,
+                                category: category,
                                 topic: selectedTopic,
-                                content: detailMessage
+                                content: detailMessage,
+                                mentor: mentorName
                             )
                         case .edit(let message):
                                 viewModel.updateMessage(id: message.id, newTopic: selectedTopic, newContent: detailMessage
@@ -53,7 +56,7 @@ struct WriteMessageView: View {
                 detailMessage = message.content
                 selectedTopic = message.topic
             } else {
-                selectedTopic = selectedTopic
+                selectedTopic = initialTopic
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -73,7 +76,7 @@ struct WriteMessageView: View {
     private var topicField: some View {
         VStack(alignment: .leading, spacing: 9, content: {
             //TODO: - 실제 선택된 멘토, 카테고리로 설정되어야 함
-            Text("ISAAC > 진로/커리어")
+            Text("\(mentorName) > \(category.rawValue)")
                 .font(.pretendardMedium14)
                 .foregroundStyle(.gray01)
             
@@ -82,8 +85,12 @@ struct WriteMessageView: View {
                 .foregroundStyle(.mainText)
             
             TopicPicker(
-                options: currentCategory.dummyTopics,
-                selectedOption: $selectedTopic
+                options: category.dummyTopics,
+                selectedOption: $selectedTopic,
+                height: 31,
+                fontStyle: .pretendardMedium17,
+                arrowSize: 24, 
+                text: "Topic을 선택해주세요"
             )
         })
         .frame(width: 360, height: 85)
@@ -109,6 +116,3 @@ struct WriteMessageView: View {
     }
 }
 
-#Preview {
-    WriteMessageView(mode: .create)
-}

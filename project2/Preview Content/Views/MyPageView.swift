@@ -37,7 +37,12 @@ struct MyPageView: View {
             }
             .navigationDestination(isPresented: $showEditView) {
                 if let selected = selectedMessage {
-                    WriteMessageView(mode: .edit(existingMessage: selected))
+                    WriteMessageView(
+                        mode: .edit(existingMessage: selected),
+                        mentorName: selected.mentor,
+                        category: selected.category,
+                        initialTopic: selected.topic
+                    )
                 }
             }
         }

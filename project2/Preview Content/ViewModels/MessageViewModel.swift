@@ -23,16 +23,19 @@ class MessageViewModel: ObservableObject {
         imageURL: String,
         category: TopicCategory,
         topic: String,
-        content: String
+        content: String,
+        mentor: String
     ) async {
         let messageID = UUID().uuidString
         let now = Date()
+        guard let uid = Auth.auth().currentUser?.uid else { return }
 
         let message = MessageInfo(
             id: messageID,
-            runnerID: nickname,
+            runnerID: uid,
+            runner: nickname,
             runnerImageURL: imageURL,
-            mentorID: "Isaac", // TODO: 실제 멘토 정보로 교체
+            mentor: mentor,
             topic: topic,
             content: content,
             category: category,
@@ -52,8 +55,10 @@ class MessageViewModel: ObservableObject {
     // MARK: - READ
     func fetchMessages(for nickname: String) async {
         do {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            
             let snapshot = try await db.collection("messages")
-                .whereField("runnerID", isEqualTo: nickname)
+                .whereField("runnerID", isEqualTo: uid)
                 .order(by: "createdAt", descending: true)
                 .getDocuments()
 

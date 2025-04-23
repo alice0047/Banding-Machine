@@ -9,6 +9,11 @@ import SwiftUI
 
 struct TopicSheet: View {
     @Binding var isPresented: Bool // 모달의 표시 여부 바인딩
+    let selectedCategory: TopicCategory
+    let selectedMentor: String
+    let onSend: (String) -> Void
+    
+    @State private var selectedTopic: String = ""
 
     var body: some View {
         ZStack {
@@ -18,6 +23,10 @@ struct TopicSheet: View {
             customAlertWindow
         }
         .animation(.easeInOut(duration: 0.5), value: isPresented)
+        .onAppear {
+            // ✅ 카테고리에 해당하는 토픽 중 랜덤 선택
+            selectedTopic = selectedCategory.dummyTopics.randomElement() ?? "토픽이 없습니다"
+        }
     }
     
     private var customAlertWindow: some View {
@@ -57,17 +66,17 @@ struct TopicSheet: View {
     private var choosedTopic: some View {
         //TODO: 들어갈 내용들 이전 메인에서 선택한 값들로 초기화해야함
         VStack(alignment: .center, spacing: 12, content: {
-            Text("ISAAC!") // 멘토 이름
+            Text(selectedMentor) // 멘토 이름
                 .font(.pretendardMedium21)
                 .foregroundStyle(.mainText)
             
             Spacer().frame(height: 1)
             
-            Text("첫 회사는 어떻게 선택하셨어요?") // 선정된 토픽
+            Text(selectedTopic) // 선정된 토픽
                 .font(.pretendardSemiBold24)
                 .foregroundStyle(.mainText)
             
-            Text("# 진로/커리어 상담")
+            Text("# \(selectedCategory.rawValue)")
                 .font(.pretendardRegular17)
                 .foregroundStyle(.gray01)
         })
@@ -77,7 +86,7 @@ struct TopicSheet: View {
     private var btns: some View {
         HStack(alignment: .center, spacing: 18, content: {
             Button(action: {
-                print("다시 뽑기 버튼 눌림")
+                isPresented = false
             }, label: {
                 Text("다시 뽑기")
                     .frame(width: 150, height: 52)
@@ -92,7 +101,8 @@ struct TopicSheet: View {
             })
             
             Button(action: {
-                print("다시 뽑기 버튼 눌림")
+                isPresented = false
+                onSend(selectedTopic)
             }, label: {
                 Text("메시지 보내기")
                     .frame(width: 150, height: 52)
@@ -103,10 +113,4 @@ struct TopicSheet: View {
             })
         })
     }
-}
-
-#Preview {
-    @Previewable @State var showModal = false
-    
-    TopicSheet(isPresented: $showModal)
 }

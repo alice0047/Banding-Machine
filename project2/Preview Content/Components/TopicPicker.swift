@@ -10,6 +10,13 @@ import SwiftUI
 struct TopicPicker: View {
     let options: [String]
     @Binding var selectedOption: String
+    
+    // 스타일 관련 파라미터 추가
+    let height: CGFloat
+    let fontStyle: Font
+    let arrowSize: CGFloat
+    let text: String
+    
 
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
@@ -25,21 +32,22 @@ struct TopicPicker: View {
                 }
             } label: {
                 HStack {
-                    Text(selectedOption.isEmpty ? "주제를 선택해주세요" : selectedOption)
-                        .font(.pretendardRegular17)
+                    Text(selectedOption.isEmpty ? text : selectedOption)
+                        .font(fontStyle)
                         .foregroundColor(.mainText)
 
                     Spacer()
 
                     Image("pickerBtn")
                         .resizable()
-                        .frame(width:15, height: 8)
+                        .frame(width:arrowSize, height: arrowSize)
                 }
+                .frame(width: 345, height: height)
             }
 
             // 아래 구분선
             Rectangle()
-                .frame( width: 360, height: 1)
+                .frame(width: 345, height: 1)
             
                 .foregroundColor(.gray00)
         }

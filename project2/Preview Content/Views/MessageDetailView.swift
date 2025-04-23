@@ -30,12 +30,12 @@ struct MessageDetailView: View {
     private var messageField: some View {
         VStack(alignment: .leading, spacing: 12, content: {
             profile(
-                name: message.runnerID,
+                name: message.runner,
                 imageURL: message.runnerImageURL,
                 date: message.createdAt
             )
             
-            Text("\(message.mentorID), \(message.topic)")
+            Text("\(message.mentor), \(message.topic)")
                 .font(.pretendardSemiBold18)
                 .foregroundStyle(.mainText)
             
@@ -96,19 +96,3 @@ private func profile(name: String, imageURL: String, date: Date) -> some View {
         }
     }
 
-
-#Preview {
-    let dummyMessage = MessageInfo(
-        id: "test123",
-        runnerID: "Bin",
-        runnerImageURL: "https://example.com/image.jpg",
-        mentorID: "ISAAC",
-        topic: "첫 회사는 어떻게 선택하셨어요?",
-        content: "저는 요즘 커리어에 대한 고민이 많아서요...",
-        category: .career,
-        createdAt: Date(),
-        replyCount: 2
-    )
-    
-    return MessageDetailView(message: dummyMessage)
-}
